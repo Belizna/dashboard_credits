@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 import { Form, Input, Button, DatePicker } from 'antd';
 import axios from "axios";
 
@@ -40,10 +40,10 @@ const calculator_of_payments = (values) => {
         {
           mouth=1
           year++
-          var date = (`${year}-0${mouth}-${day}`)
+          date = (`${year}-0${mouth}-${day}`)
         }
         else{
-          var date = (`${year}-${mouth}-${day}`)
+            date = (`${year}-${mouth}-${day}`)
         }
         var oplata = {credit_name, date, summ, status}
         

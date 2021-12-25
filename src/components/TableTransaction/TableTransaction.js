@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Table, Divider, Button, Modal} from 'antd';
+import { Table, Button, Modal} from 'antd';
 import "./tableTransaction.css"
 import moment from "moment";
 import FormTransaction from "../FormTransaction/FormTransaction";
@@ -18,7 +18,7 @@ const TableTransaction = ({record}) => {
             url: `https://backend-dashboard-credits.herokuapp.com/transaction/search/${record}`
         })
         .then(trans => setTransaction(trans.data))
-    }, [])
+    }, [record])
     const showAddTransaction = () => {
         setIsModalAddTransaction(true)
     }

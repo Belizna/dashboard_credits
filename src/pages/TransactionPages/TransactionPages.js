@@ -4,7 +4,6 @@ import CreditStatic from "../../components/CreditStatic/CreditStatic";
 import TablePayments from "../../components/TablePayments/TablePayments";
 import TableTransaction from "../../components/TableTransaction/TableTransaction";
 import { Tabs } from "antd";
-import { Row, Col, Slider } from 'antd';
 import "./transactionPages.css"
 
 const {TabPane} = Tabs

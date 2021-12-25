@@ -60,7 +60,7 @@ const CreditStatic = ({record}) => {
 
         axios.get(`https://backend-dashboard-credits.herokuapp.com/transaction/search/${record}`)
         .then(trans => setStaticTransaction(trans.data))
-    }, [])
+    }, [record])
 
     const dataTable = [
         {   
@@ -114,12 +114,17 @@ const CreditStatic = ({record}) => {
             />
 
 <p className="transparent">
+    
     {data_static.splice(0, data_static.length)}
     {data_repayment.splice(0, data_repayment.length)}
-        {staticTransaction.map(trans => {data_static.push([moment(trans.date).format('DD.MM'), 
+        {
+        // eslint-disable-next-line
+        staticTransaction.map(trans => {data_static.push([moment(trans.date).format('DD.MM'), 
                             trans.summ])})}
-        {staticRepayment.map(rep => { rep.status === true ? data_repayment.push([moment(rep.date).format('DD.MM'), 
-                            rep.summ]) : console.log() })}
+        { // eslint-disable-next-line
+        staticRepayment.filter(rep => rep.status === true).map(rep => {
+            data_repayment.push([moment(rep.date).format('DD.MM'), rep.summ])
+        })}
                             </p>
         </>
     )

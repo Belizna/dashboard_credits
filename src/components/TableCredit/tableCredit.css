@@ -4,3 +4,8 @@
     justify-content: center;
     width: 900px;
 }
+.transparent {
+    text-transform: uppercase;
+    color: #FFF;
+    mix-blend-mode: multiply;
+}

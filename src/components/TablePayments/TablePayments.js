@@ -21,7 +21,7 @@ const TablePayments = ({record}) => {
             url : `https://backend-dashboard-credits.herokuapp.com/repayments/search/${record}`
         })
         .then(payment => setPayments(payment.data))
-    }, [])
+    }, [record])
     
     const setMakeRepayment = () => {
         axios.get(`https://backend-dashboard-credits.herokuapp.com/repayments/make/${record}`)

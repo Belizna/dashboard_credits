@@ -106,13 +106,14 @@ const TableCredit = () => {
         dataSource={datacredit} columns={columns}/>
         <Button onClick={showAddCreditModel}>Взять кредит</Button>
     </div>
-    <a>{credit.map(cred => {datacredit.push({
+    {// eslint-disable-next-line
+    <p className='transparent'>{credit.map(cred => {datacredit.push({
                               _id: cred._id,
                               name_credit: cred.name_credit,
                               date: moment(cred.date).format('DD.MM.YYYY'),
                               summ: cred.summ,
                               percent: cred.percent,
-                              term: cred.term})})}</a>
+                              term: cred.term})})}</p>}
     </>
     );
 }
