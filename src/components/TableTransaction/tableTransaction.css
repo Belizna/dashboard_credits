@@ -1,0 +1,28 @@
+.tableTransaction {
+    width: 450px;
+    margin-top: 1%;
+    margin-left: 21%;
+
+}
+.title_transaction {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+.buttonTransaction {
+    display: flex;
+    justify-content: center;
+}
+.addTransaction {
+    margin-left: 15%;
+    width: 130px;
+}
+.deleteTransaction {
+    width: 130px;
+}
+
+.transparent {
+    text-transform: uppercase;
+    color: #FFF;
+    mix-blend-mode: multiply;
+}

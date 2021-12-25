@@ -1,0 +1,21 @@
+.staticPay {
+    width: 450px;
+    margin-top: 1%;
+    margin-top: 1%;
+    margin-left: 20%;
+}
+.titleStatic {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.LineChart {
+    margin-top: 5%;
+}
+
+.transparent {
+    text-transform: uppercase;
+    color: #FFF;
+    mix-blend-mode: multiply;
+}

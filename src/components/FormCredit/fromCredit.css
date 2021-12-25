@@ -1,0 +1,16 @@
+.formCredit {
+    display: flex;
+    justify-content: end;
+}
+
+.buttonForm {
+    margin-left: 55%;
+}
+
+.odd {
+    background: color(var(--midnight-5) alpha(50%));
+  }
+  
+  .even {
+    background-color: #f8f9fa;
+  }
