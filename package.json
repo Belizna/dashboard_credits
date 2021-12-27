@@ -44,5 +44,5 @@
       "last 1 safari version"
     ]
   },
-  "proxe": "localhost:3001"
+  "proxe": "https://backend-dashboard-credits.herokuapp.com"
 }

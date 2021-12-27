@@ -1,8 +1,6 @@
 .staticPay {
     width: 450px;
-    margin-top: 1%;
-    margin-top: 1%;
-    margin-left: 20%;
+    margin: 0 auto;
 }
 .titleStatic {
     display: flex;

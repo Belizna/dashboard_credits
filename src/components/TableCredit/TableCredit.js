@@ -32,7 +32,7 @@ const TableCredit = () => {
     setIsModalAddCredit(true)
   }
 
-  const handleOk = () => {
+  const handleOk =  () => {
     setIsModalVisible(false);
     axios.delete(`https://backend-dashboard-credits.herokuapp.com/credit/${delcredit._id}`)
     axios.delete(`https://backend-dashboard-credits.herokuapp.com/transaction/delete/${delcredit.name_credit}`)
@@ -82,7 +82,7 @@ const TableCredit = () => {
       {
         title: 'Подробно', 
         render: () => (
-            <Button type="primary"><NavLink to={`/${isSearchTransaction.name_credit}`}>Перейти</NavLink></Button>    
+            <Button type="primary"><NavLink to={`/credit/${isSearchTransaction.name_credit}`}>Перейти</NavLink></Button>    
           )
       },
       

@@ -1,7 +1,6 @@
 .tableCredit {
-    margin-top: 10%;
-    margin-left: 5%;
-    justify-content: center;
+    margin: 0 auto;
+    margin-top: 100px;
     width: 900px;
 }
 .transparent {

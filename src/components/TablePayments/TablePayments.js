@@ -20,19 +20,29 @@ const TablePayments = ({record}) => {
             method: "GET",
             url : `https://backend-dashboard-credits.herokuapp.com/repayments/search/${record}`
         })
-        .then(payment => setPayments(payment.data))
-    }, [record])
+        .then(payment => {setPayments(payment.data)})
+    }, [])
     
     const setMakeRepayment = () => {
         axios.get(`https://backend-dashboard-credits.herokuapp.com/repayments/make/${record}`)
         .then(repaymet => setIdPayment(repaymet.data._id))
         axios.post(`https://backend-dashboard-credits.herokuapp.com/repayments/make/update/${idpayments}`)
+        axios({
+            method: "GET",
+            url : `https://backend-dashboard-credits.herokuapp.com/repayments/search/${record}`
+        })
+        .then(payment => {setPayments(payment.data); console.log(payment.data)})
     }
 
     const setDelMakeRepayment = () => {
         axios.get(`https://backend-dashboard-credits.herokuapp.com/repayments/makeresert/${record}`)
         .then(repaymet => setDelIdPayment(repaymet.data._id))
         axios.post(`https://backend-dashboard-credits.herokuapp.com/repayments/makeresert/update/${iddelpayments}`)
+        axios({
+            method: "GET",
+            url : `https://backend-dashboard-credits.herokuapp.com/repayments/search/${record}`
+        })
+        .then(payment => {setPayments(payment.data); console.log(payment.data)})
     }
 
     const showEditModal = () => {
@@ -116,20 +126,22 @@ const TablePayments = ({record}) => {
             </Modal>
             <p className="titlePay">График ежемесячных платежей</p>
             <Table
-            onRow={(record) => {
+            onRow={(pay) => {
                 return {
-                    onClick: () => {setUpdatePayment(record)}
+                    onClick: () => {setUpdatePayment(pay)}
+
                 }
             }}
                 rowClassName={(record, index) => record.status === false ? 'table-row-dark' :  'table-row-light'}
                 columns={columns} 
-                dataSource={datapayments}
+                dataSource={payments}
             />
             <div className="buttonPayments">
                 <Button className="deletePayments" onClick={setDelMakeRepayment}>Отменить платеж</Button>
                 <Button className="addPayments" onClick={setMakeRepayment}>Внести платеж</Button>
             </div>
             <p class="transparent">{payments.map(pay => datapayments.push({
+                        _id: pay._id,
                         date: moment(pay.date).format('DD.MM.YYYY'),
                         summ: pay.summ,
                         status: pay.status

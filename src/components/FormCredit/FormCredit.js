@@ -23,9 +23,6 @@ const calculator_of_payments = (values) => {
     var mouth = values.date.substr(5,2)
     var day = values.date.substr(8,2)
     var year = values.date.substr(0,4)
-    console.log(mouth)
-    console.log(day)
-    console.log(year)
     
     mouth++
 
@@ -40,15 +37,15 @@ const calculator_of_payments = (values) => {
         {
           mouth=1
           year++
-          date = (`${year}-0${mouth}-${day}`)
+          var date = (`${year}-0${mouth}-${day}`)
         }
         else{
-            date = (`${year}-${mouth}-${day}`)
+            var date = (`${year}-${mouth}-${day}`)
         }
         var oplata = {credit_name, date, summ, status}
+        console.log(oplata)
         
         axios.post('https://backend-dashboard-credits.herokuapp.com/repayments/add',oplata)
-        sleep(20)
         mouth++
     }
 

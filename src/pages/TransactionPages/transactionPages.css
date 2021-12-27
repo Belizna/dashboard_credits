@@ -1,5 +1,4 @@
 .transactionPages {
-    margin-left: 30%;
-    margin-right: 50%;
+    margin: 0 auto;
     width: 800px;
 }

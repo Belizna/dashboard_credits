@@ -7,11 +7,9 @@ import {Routes, Route} from "react-router-dom"
 function App() {   
   return (
     <>
-    <div className="header">
-    </div>
     <Routes>
     <Route path="/" element={<Main/>} exact/>
-    <Route path="/:handle" element={<TransactionPages/>} exact/>
+    <Route path="/credit/:handle" element={<TransactionPages/>} exact/>
     </Routes>
     </>
   );
