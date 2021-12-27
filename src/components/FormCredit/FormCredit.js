@@ -7,11 +7,6 @@ const layout = {
   wrapperCol: { span: 10 },
 };
 
-function sleep(ms) {
-  ms += new Date().getTime();
-  while (new Date() < ms){}
-}
-
 const calculator_of_payments = (values) => {
     const stavka = values.percent / 12 / 100;
     const k_annuit = stavka * Math.pow((1 + stavka), values.term) / 
@@ -37,10 +32,10 @@ const calculator_of_payments = (values) => {
         {
           mouth=1
           year++
-          var date = (`${year}-0${mouth}-${day}`)
+           date = (`${year}-0${mouth}-${day}`)
         }
         else{
-            var date = (`${year}-${mouth}-${day}`)
+             date = (`${year}-${mouth}-${day}`)
         }
         var oplata = {credit_name, date, summ, status}
         console.log(oplata)
