@@ -25,13 +25,14 @@ const TablePayments = ({record}) => {
     
     const setMakeRepayment = () => {
         axios.get(`https://backend-dashboard-credits.herokuapp.com/repayments/make/${record}`)
-        .then(repaymet => setIdPayment(repaymet.data._id))
+        .then(repaymet => {setIdPayment(repaymet.data._id)})
+
         axios.post(`https://backend-dashboard-credits.herokuapp.com/repayments/make/update/${idpayments}`)
         axios({
             method: "GET",
             url : `https://backend-dashboard-credits.herokuapp.com/repayments/search/${record}`
         })
-        .then(payment => {setPayments(payment.data); console.log(payment.data)})
+        .then(payment => {setPayments(payment.data)})
     }
 
     const setDelMakeRepayment = () => {
@@ -42,7 +43,8 @@ const TablePayments = ({record}) => {
             method: "GET",
             url : `https://backend-dashboard-credits.herokuapp.com/repayments/search/${record}`
         })
-        .then(payment => {setPayments(payment.data); console.log(payment.data)})
+        .then(payment => {setPayments(payment.data)})
+
     }
 
     const showEditModal = () => {

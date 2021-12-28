@@ -41,7 +41,6 @@ const TableTransaction = ({record}) => {
     }
     const showDeleteTransaction = () => {
             setIsModalDeleteTransaction(true)
-            console.log(deltransaction._id)
     }
     const column = [
             {
@@ -81,6 +80,7 @@ const TableTransaction = ({record}) => {
             </div>   
             <p class="transparent">
                 {transaction.map(tran => datatransaction.push({
+                        _id: tran._id,
                         date: moment(tran.date).format('DD.MM.YYYY'),
                         summ: tran.summ
                 }))}

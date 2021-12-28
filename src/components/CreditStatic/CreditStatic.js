@@ -63,11 +63,13 @@ const CreditStatic = ({record}) => {
     }, [record])
 
     const dataTable = [
-        {   
+        {      
+
             ostatok: ostatok,
             viplata: viplata,
             dosrochno: dosrochno,
             economia: duty - ostatok - viplata - dosrochno
+            
         }
     ]
 
