@@ -1,50 +1,35 @@
 import React, { useEffect, useState } from "react";
 import {Button, Table, Modal,Form, Input} from "antd"
-import axios from "axios";
 import './tablePayments.css'
-import moment from "moment";
 import FormPayment from "../FormPayment/FormPayment";
+import { useDispatch, useSelector } from "react-redux";
+import { loadPayment, makePayment, makeResetPayment,deletePaymentId  } from "../../redux/action/payment";
 
 const TablePayments = ({record}) => {
 
-    const datapayments =[]
-    const [payments, setPayments] = useState([])
-    const [idpayments, setIdPayment] = useState("")
-    const [iddelpayments, setDelIdPayment] = useState("")
+    let dispatch = useDispatch()
+
+    const {payments} = useSelector((state) => state.data_payments)
+  
+    useEffect(()=> {
+        dispatch(loadPayment(record))
+        //eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
     const [visibleEditModal, setVisibleEditModal] = useState(false)
     const [updatepayment, setUpdatePayment] = useState([])
     const [visibleDeleteModal, setVisibleDeleteModal] = useState(false)
 
-    useEffect(()=> {
-        axios({
-            method: "GET",
-            url : `https://backend-dashboard-credits.herokuapp.com/repayments/search/${record}`
-        })
-        .then(payment => {setPayments(payment.data)})
-    }, [record])
     
     const setMakeRepayment = () => {
-        axios.get(`https://backend-dashboard-credits.herokuapp.com/repayments/make/${record}`)
-        .then(repaymet => {setIdPayment(repaymet.data._id)})
-
-        axios.post(`https://backend-dashboard-credits.herokuapp.com/repayments/make/update/${idpayments}`)
-        axios({
-            method: "GET",
-            url : `https://backend-dashboard-credits.herokuapp.com/repayments/search/${record}`
-        })
-        .then(payment => {setPayments(payment.data)})
+        const add = payments.find(id => id.status === false)
+        dispatch(makePayment(add))
     }
 
     const setDelMakeRepayment = () => {
-        axios.get(`https://backend-dashboard-credits.herokuapp.com/repayments/makeresert/${record}`)
-        .then(repaymet => setDelIdPayment(repaymet.data._id))
-        axios.post(`https://backend-dashboard-credits.herokuapp.com/repayments/makeresert/update/${iddelpayments}`)
-        axios({
-            method: "GET",
-            url : `https://backend-dashboard-credits.herokuapp.com/repayments/search/${record}`
-        })
-        .then(payment => {setPayments(payment.data)})
-
+        const _id = payments.filter(id => id.status === true)
+        const del = _id[_id.length - 1]
+        dispatch(makeResetPayment(del))
     }
 
     const showEditModal = () => {
@@ -74,7 +59,8 @@ const TablePayments = ({record}) => {
         setVisibleDeleteModal(false)
     }
     const deletePayment = () => {
-        axios.delete(`https://backend-dashboard-credits.herokuapp.com/repayments/${updatepayment._id}`)
+        dispatch(deletePaymentId(updatepayment))
+        setVisibleDeleteModal(false)
     }
     
 
@@ -142,12 +128,6 @@ const TablePayments = ({record}) => {
                 <Button className="deletePayments" onClick={setDelMakeRepayment}>Отменить платеж</Button>
                 <Button className="addPayments" onClick={setMakeRepayment}>Внести платеж</Button>
             </div>
-            <p class="transparent">{payments.map(pay => datapayments.push({
-                        _id: pay._id,
-                        date: moment(pay.date).format('DD.MM.YYYY'),
-                        summ: pay.summ,
-                        status: pay.status
-            }))}</p>
         </div>
     )
 }

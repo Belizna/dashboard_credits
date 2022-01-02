@@ -2,28 +2,26 @@ import React, {useState, useEffect} from 'react';
 import { Table , Modal, Button} from 'antd';
 import {NavLink} from 'react-router-dom'
 import axios from 'axios';
-import moment from 'moment';
 import FormCredit from '../FormCredit/FormCredit';
-
 import './tableCredit.css'
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteCredit, loadCredits } from '../../redux/action/credits';
 
 const TableCredit = () => {
 
-  const datacredit = []
-  const [delcredit, setDelcredit] = useState([])
-  const [credit, setCredit] = useState([])
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isModalAddCredit, setIsModalAddCredit] = useState(false);
-  const [isSearchTransaction, setIsSearchTransaction] = useState([])
+  let dispatch = useDispatch()
+
+  const {credits} = useSelector((state) => state.data_credits)
+
 
   useEffect(()=> {
-    axios({
-      method: "GET",
-      url: "https://backend-dashboard-credits.herokuapp.com/credit/"
-    }).then(
-      credits => setCredit(credits.data)
-    )
+      dispatch(loadCredits())
+      //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  const [actionCredit, setActionCredit] = useState([])
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isModalAddCredit, setIsModalAddCredit] = useState(false);
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -34,24 +32,23 @@ const TableCredit = () => {
 
   const handleOk =  () => {
     setIsModalVisible(false);
-    axios.delete(`https://backend-dashboard-credits.herokuapp.com/credit/${delcredit._id}`)
-    axios.delete(`https://backend-dashboard-credits.herokuapp.com/transaction/delete/${delcredit.name_credit}`)
-    axios.delete(`https://backend-dashboard-credits.herokuapp.com/repayments/delete/${delcredit.name_credit}`)
-    axios.get('https://backend-dashboard-credits.herokuapp.com/credit/')
-    .then(credits => setCredit(credits.data))
+    axios.delete(`https://backend-dashboard-credits.herokuapp.com/transaction/delete/${actionCredit.name_credit}`)
+    axios.delete(`https://backend-dashboard-credits.herokuapp.com/repayments/delete/${actionCredit.name_credit}`)
+    dispatch(deleteCredit(actionCredit._id))
   };
+
   const handleCreditOk = () => {
     setIsModalAddCredit(false)
-    axios.get('https://backend-dashboard-credits.herokuapp.com/credit/')
-    .then(credits => setCredit(credits.data))
   }
 
   const handleCancel = () => {
     setIsModalVisible(false);
-  };
+  }
+
   const handleCanselAddCredit = () => {
     setIsModalAddCredit(false)
   } 
+
     const columns = [
       {
         title: 'Наименование',
@@ -82,38 +79,37 @@ const TableCredit = () => {
       {
         title: 'Подробно', 
         render: () => (
-            <Button type="primary"><NavLink to={`/credit/${isSearchTransaction.name_credit}`}>Перейти</NavLink></Button>    
+            <Button type="primary"><NavLink to={`/credit/${actionCredit.name_credit}`}>Next</NavLink></Button>    
           )
       },
       
     ];
+
+    
   return (
     <>
-
     <div className="tableCredit"> 
-    <Modal title="Предупреждение!" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-        <p>Вы точно хотите удалить кредит {delcredit.name_credit} ?</p>
+    <Modal 
+        title="Предупреждение!" 
+        visible={isModalVisible} 
+        onOk={handleOk} 
+        onCancel={handleCancel}>
+        <p>Вы точно хотите удалить кредит {actionCredit.name_credit} ?</p>
       </Modal>
-      <Modal title="Создание кредита" visible={isModalAddCredit} onOk={handleCreditOk} onCancel={handleCanselAddCredit}>
+
+      <Modal title="Создание кредита" 
+          visible={isModalAddCredit} 
+          onOk={handleCreditOk} 
+          onCancel={handleCanselAddCredit}>
           <FormCredit/>
         </Modal>
-      <Table 
-        onRow={(record) => {
-          return {
-            onClick: () => {setDelcredit(record); setIsSearchTransaction(record)}
-          }
-        }}
-        dataSource={datacredit} columns={columns}/>
+
+    <Table onRow={(record) =>{return{onClick: () => { setActionCredit((req) => record)}}}}
+        dataSource={credits} columns={columns}
+      />
+        
         <Button onClick={showAddCreditModel}>Взять кредит</Button>
     </div>
-    {// eslint-disable-next-line
-    <p className='transparent'>{credit.map(cred => {datacredit.push({
-                              _id: cred._id,
-                              name_credit: cred.name_credit,
-                              date: moment(cred.date).format('DD.MM.YYYY'),
-                              summ: cred.summ,
-                              percent: cred.percent,
-                              term: cred.term})})}</p>}
     </>
     );
 }

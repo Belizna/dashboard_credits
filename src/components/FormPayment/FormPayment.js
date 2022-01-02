@@ -1,8 +1,10 @@
-import React from "react"
+import React  from "react"
 import {Form, Input, Button} from "antd"
-import axios from "axios"
-
+import { useDispatch } from 'react-redux';
+import { editPayment } from '../../redux/action/payment';
 const FormPayment = ({update}) => {
+
+    let dispatch = useDispatch()
 
     const onFinish = (values) => {
         const value = {
@@ -11,7 +13,7 @@ const FormPayment = ({update}) => {
             'summ': values['summ'],
             'status': update.status
         }
-        axios.post(`https://backend-dashboard-credits.herokuapp.com/repayments/update/${update._id}`, value)
+        dispatch(editPayment(update, value))
     }
 
     return (
@@ -20,11 +22,11 @@ const FormPayment = ({update}) => {
                         onFinish={onFinish}
                     >
                     <Form.Item name={['date']}label="Дата платежа">
-                    <Input />
+                    <Input value={update.date}/>
                     </Form.Item>
 
                     <Form.Item name={['summ']} label="Сумма платежа">
-                        <Input/>
+                        <Input />
                     </Form.Item>
 
                     <Button type="primary" htmlType="submit">

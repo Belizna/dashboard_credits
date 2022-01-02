@@ -1,10 +1,11 @@
 import React from "react"
 import { Form, Input, Button, DatePicker } from 'antd';
-import axios from "axios";
-
-
+import { useDispatch } from "react-redux";
+import {transactionAdd} from "../../redux/action/transaction"
 
 const FormTransaction = ({record}) => {
+
+  let dispatch = useDispatch()
 
     const onFinish = (values) => {
         const value = {
@@ -12,7 +13,7 @@ const FormTransaction = ({record}) => {
             'date': values['date'].format('YYYY-MM-DD'),
             'summ' : values['summ']
         }
-        axios.post('https://backend-dashboard-credits.herokuapp.com/transaction/add', value)
+        dispatch(transactionAdd(value))
       };
 
     return(

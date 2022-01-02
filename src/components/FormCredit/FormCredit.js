@@ -1,6 +1,8 @@
 import React from "react"
 import { Form, Input, Button, DatePicker } from 'antd';
 import axios from "axios";
+import { useDispatch } from 'react-redux';
+import { addCredit } from '../../redux/action/credits';
 
 const layout = {
   labelCol: { span: 8 },
@@ -14,7 +16,7 @@ const calculator_of_payments = (values) => {
     const summ = Math.round(k_annuit * values.summ, 2)
     const status = false
     const credit_name = values.name_credit
-    console.log(values.date)
+    
     var mouth = values.date.substr(5,2)
     var day = values.date.substr(8,2)
     var year = values.date.substr(0,4)
@@ -38,8 +40,6 @@ const calculator_of_payments = (values) => {
              date = (`${year}-${mouth}-${day}`)
         }
         var oplata = {credit_name, date, summ, status}
-        console.log(oplata)
-        
         axios.post('https://backend-dashboard-credits.herokuapp.com/repayments/add',oplata)
         mouth++
     }
@@ -48,6 +48,7 @@ const calculator_of_payments = (values) => {
 
 const FormCredit = () => {
 
+  let dispatch = useDispatch()
   const onFinish = (values) => {
     const stavka = values.percent / 12 / 100;
     const k_annuit = stavka * Math.pow((1 + stavka), values.term) / 
@@ -66,8 +67,7 @@ const FormCredit = () => {
         'term' : values['term'],
         'duty': duty
     }
-    console.log(value)
-    axios.post('https://backend-dashboard-credits.herokuapp.com/credit/add', value)
+    dispatch(addCredit(value))
     calculator_of_payments(value)
   };
 

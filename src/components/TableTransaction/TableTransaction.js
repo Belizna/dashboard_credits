@@ -1,24 +1,25 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Table, Button, Modal} from 'antd';
 import "./tableTransaction.css"
-import moment from "moment";
 import FormTransaction from "../FormTransaction/FormTransaction";
+import { useDispatch , useSelector} from "react-redux";
+import {loadTransaction, transactionDelete} from "../../redux/action/transaction"
+
 const TableTransaction = ({record}) => {
 
-    const datatransaction = []
-    const [transaction, setTransaction] = useState([])  
+    let dispatch = useDispatch()
+
+    const {transactions} = useSelector((state) => state.data_transactions)
+  
+    useEffect(()=> {
+        dispatch(loadTransaction(record))
+        //eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
     const [deltransaction, setDeltransaction] = useState([])
     const [isModalAddTransaction, setIsModalAddTransaction] = useState(false)
     const [isModalDeleteTransaction, setIsModalDeleteTransaction] = useState(false)
 
-    useEffect(() => {
-        axios({
-            method: "GET",
-            url: `https://backend-dashboard-credits.herokuapp.com/transaction/search/${record}`
-        })
-        .then(trans => setTransaction(trans.data))
-    }, [record])
     const showAddTransaction = () => {
         setIsModalAddTransaction(true)
     }
@@ -28,7 +29,7 @@ const TableTransaction = ({record}) => {
     }
 
     const handleDeleteOk = () => {
-            axios.delete(`https://backend-dashboard-credits.herokuapp.com/transaction/${deltransaction._id}`)
+            dispatch(transactionDelete(deltransaction))
             setIsModalDeleteTransaction(false)
     }
 
@@ -71,20 +72,12 @@ const TableTransaction = ({record}) => {
                     return {
                         onClick: () => {setDeltransaction(transaction)}
                     }}
-                } dataSource={datatransaction} columns={column} />
-
+                } dataSource={transactions} columns={column} />
                 <div className="buttonTransaction">
                 <Button className="deleteTransaction" onClick={showDeleteTransaction}>Удалить</Button>
                 <Button className="addTransaction" onClick={showAddTransaction}>Добавить</Button>
                 </div>
             </div>   
-            <p class="transparent">
-                {transaction.map(tran => datatransaction.push({
-                        _id: tran._id,
-                        date: moment(tran.date).format('DD.MM.YYYY'),
-                        summ: tran.summ
-                }))}
-            </p>
         </>   
     )
 }
