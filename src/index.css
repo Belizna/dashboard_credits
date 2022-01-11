@@ -9,9 +9,10 @@ body {
   background: linear-gradient(-45deg, #72cbd6, #92c8e7, #8cc8ca, #87c7b8);
   background-size: 1000% 1000%;
 	font-size: 80%;
-	animation: gradient 10s ease infinite;
+	animation: gradient 7s ease infinite;
 	height: 100vh;
 }
+
 @keyframes gradient {
 	0% {
 		background-position: 0% 50%;

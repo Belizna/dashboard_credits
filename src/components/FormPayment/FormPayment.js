@@ -10,7 +10,7 @@ const FormPayment = ({update}) => {
     const onFinish = (values) => {
         const value = {
             credit_name : update.credit_name,
-            date : moment(values['date'], 'DD.MM.YYYY').format('YYYY-MM-DD'),
+            date : moment(values['date'], 'LL').format('YYYY-MM-DD'),
             summ: values['summ'],
             status: update.status
         }

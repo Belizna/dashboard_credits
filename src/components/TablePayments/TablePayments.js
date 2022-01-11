@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import {Button, Table, Modal,Form, Input} from "antd"
 import './tablePayments.css'
 import moment from "moment"
+import 'moment/locale/ru'
 import FormPayment from "../FormPayment/FormPayment";
 import { useDispatch, useSelector } from "react-redux";
 import { loadPayment, makePayment, makeResetPayment,deletePaymentId  } from "../../redux/action/payment";
 
 const TablePayments = ({record}) => {
 
+    moment.locale('ru')
     let dispatch = useDispatch()
 
     const {payments} = useSelector((state) => state.data_payments)
@@ -18,7 +20,7 @@ const TablePayments = ({record}) => {
     payments.map(pay => paymentsTable.push({
         _id: pay._id,
         credit_name: pay.credit_name,
-        date: moment(pay.date).format('DD.MM.YYYY'),
+        date: moment(pay.date).format('LL'),
         summ: pay.summ,
         status: pay.status
     }))

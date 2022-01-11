@@ -17,7 +17,7 @@ const TableTransaction = ({record}) => {
 
     transactions.map(tran => transactionTable.push({
         _id: tran._id,
-        date: moment(tran.date).format('DD.MM.YYYY'),
+        date: moment(tran.date).format('LL'),
         summ: tran.summ
     }))
 
