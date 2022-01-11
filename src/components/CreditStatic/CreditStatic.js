@@ -1,9 +1,13 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect} from "react"
 import { Table, Divider } from "antd"
-import axios from "axios"
 import AnyChart from 'anychart-react'
 import moment from "moment"
 import "./CreditStatic.css"
+
+import { useDispatch, useSelector } from 'react-redux';
+import { loadPayment } from "../../redux/action/payment"
+import { loadTransaction } from "../../redux/action/transaction"
+import { loadCredits } from "../../redux/action/credits"
 
 const data_static = []
 const data_repayment = []
@@ -25,42 +29,50 @@ const columns = [
         title: "Экономия",
         dataIndex: "economia"
     },
+    {
+        title: "Месяцев выплачено",
+        dataIndex: "mouth_viplata"
+    },
+    {
+        title: "Месяцев осталось",
+        dataIndex: "mouth_ostatok"
+    },
 ]
 
 
 const CreditStatic = ({record}) => {
 
-    const [ostatok, setOstatok] = useState(1)
-    const [viplata, setViplata] = useState(1)
-    const [dosrochno, setDosrochno] = useState(1)
-    const [duty, setDuty] = useState(1)
-    const [staticRepayment, setStaticRepayment] = useState([])
-    const [staticTransaction, setStaticTransaction] = useState([])
-    const [summ, setSumm] = useState(1)
+    let dispatch = useDispatch()
+
+    const {credits} = useSelector((state) => state.data_credits)
+    const {payments} = useSelector((state) => state.data_payments)
+    const {transactions} = useSelector((state) => state.data_transactions)
+
+
+    const viplata = payments.filter(stat => stat.status === true).reduce((a,b) => a + b.summ, 0)
+    const dosrochno = transactions.reduce((a,b) => a + b.summ, 0)
+    const ostatok = payments.filter(stat => stat.status === false).reduce((a,b) => a + b.summ,0)
+    const duty = credits.filter(cred => cred.name_credit === record)[0].duty
+    const summ = credits.filter(cred => cred.name_credit === record)[0].summ
+    const mouth_viplata = payments.filter(stat => stat.status === true).length
+    const mouth_ostatok = payments.filter(stat => stat.status === false).length
+
+
+    data_static.splice(0, data_static.length)
+    data_repayment.splice(0, data_repayment.length)
+
+        transactions.map(trans => data_static.push([moment(trans.date).format('DD.MM'), 
+                            trans.summ]))
+                            
+        payments.filter(rep => rep.status === true).map(rep => 
+            data_repayment.push([moment(rep.date).format('DD.MM'), rep.summ]))
 
     useEffect(()=>{
-
-        axios.get(`https://backend-dashboard-credits.herokuapp.com/repayments/ostatok/${record}`)
-        .then(ost => { try{setOstatok(ost.data[0].sum)} catch{setOstatok(0)}})
-        
-        axios.get(`https://backend-dashboard-credits.herokuapp.com/repayments/viplata/${record}`)
-        .then(vip => { try{setViplata(vip.data[0].sum)} catch {setViplata(0)}})
-
-        axios.get(`https://backend-dashboard-credits.herokuapp.com/transaction/dosrochno/${record}`)
-        .then(dos => { try{setDosrochno(dos.data[0].sum)} catch {setDosrochno(0)}})
-
-        axios.get(`https://backend-dashboard-credits.herokuapp.com/credit/search/${record}`)
-        .then(dut => { try{setDuty(dut.data[0].duty)} catch {setDuty(0)}})
-
-        axios.get(`https://backend-dashboard-credits.herokuapp.com/credit/search/${record}`)
-        .then(sum => { try{setSumm(sum.data[0].summ)} catch {setSumm(0)}})
-
-        axios.get(`https://backend-dashboard-credits.herokuapp.com/repayments/search/${record}`)
-        .then(stat => setStaticRepayment(stat.data))
-
-        axios.get(`https://backend-dashboard-credits.herokuapp.com/transaction/search/${record}`)
-        .then(trans => setStaticTransaction(trans.data))
-    }, [record])
+        dispatch(loadCredits())
+        dispatch(loadPayment(record))
+        dispatch(loadTransaction(record))
+        //eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     const dataTable = [
         {      
@@ -68,8 +80,9 @@ const CreditStatic = ({record}) => {
             ostatok: ostatok,
             viplata: viplata,
             dosrochno: dosrochno,
-            economia: duty - ostatok - viplata - dosrochno
-            
+            economia: duty - ostatok - viplata - dosrochno,
+            mouth_viplata: mouth_viplata,
+            mouth_ostatok: mouth_ostatok
         }
     ]
 
@@ -96,7 +109,7 @@ const CreditStatic = ({record}) => {
                 height={400}
                 type="pie"
                 data={[["экономия",dataTable[0].economia], 
-                ["переплата", duty-summ-dataTable[0].economia]]}
+                ["переплата", duty - summ - dataTable[0].economia]]}
                 title="График отношения экономии к переплате"
             />
             <Divider/>
@@ -114,20 +127,6 @@ const CreditStatic = ({record}) => {
                 data={data_repayment}
                 title="График ежемесячных погашений"
             />
-
-<p className="transparent">
-    
-    {data_static.splice(0, data_static.length)}
-    {data_repayment.splice(0, data_repayment.length)}
-        {
-        // eslint-disable-next-line
-        staticTransaction.map(trans => {data_static.push([moment(trans.date).format('DD.MM'), 
-                            trans.summ])})}
-        { // eslint-disable-next-line
-        staticRepayment.filter(rep => rep.status === true).map(rep => {
-            data_repayment.push([moment(rep.date).format('DD.MM'), rep.summ])
-        })}
-                            </p>
         </>
     )
 }

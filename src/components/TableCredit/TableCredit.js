@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { Table , Modal, Button} from 'antd';
 import {NavLink} from 'react-router-dom'
+import moment from "moment"
 import axios from 'axios';
 import FormCredit from '../FormCredit/FormCredit';
 import './tableCredit.css'
@@ -11,9 +12,19 @@ const TableCredit = () => {
 
   let dispatch = useDispatch()
 
+  const creditsTable = []
   const {credits} = useSelector((state) => state.data_credits)
 
-
+  creditsTable.splice(0, creditsTable.length)
+  credits.map(cred => creditsTable.push(
+    {_id: cred._id,
+      name_credit: cred.name_credit,
+      date: moment(cred.date).format('DD.MM.YYYY'),
+      duty: cred.duty,
+      percent: cred.percent,
+      summ: cred.summ,
+      term: cred.term}
+  ))
   useEffect(()=> {
       dispatch(loadCredits())
       //eslint-disable-next-line react-hooks/exhaustive-deps
@@ -105,7 +116,7 @@ const TableCredit = () => {
         </Modal>
 
     <Table onRow={(record) =>{return{onClick: () => { setActionCredit((req) => record)}}}}
-        dataSource={credits} columns={columns}
+        dataSource={creditsTable} columns={columns}
       />
         
         <Button onClick={showAddCreditModel}>Взять кредит</Button>

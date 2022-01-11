@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Table, Button, Modal} from 'antd';
 import "./tableTransaction.css"
+import moment from "moment"
 import FormTransaction from "../FormTransaction/FormTransaction";
 import { useDispatch , useSelector} from "react-redux";
 import {loadTransaction, transactionDelete} from "../../redux/action/transaction"
@@ -10,7 +11,16 @@ const TableTransaction = ({record}) => {
     let dispatch = useDispatch()
 
     const {transactions} = useSelector((state) => state.data_transactions)
-  
+    
+    const transactionTable = []
+    transactionTable.splice(0, transactionTable.length)
+
+    transactions.map(tran => transactionTable.push({
+        _id: tran._id,
+        date: moment(tran.date).format('DD.MM.YYYY'),
+        summ: tran.summ
+    }))
+
     useEffect(()=> {
         dispatch(loadTransaction(record))
         //eslint-disable-next-line react-hooks/exhaustive-deps
@@ -72,7 +82,7 @@ const TableTransaction = ({record}) => {
                     return {
                         onClick: () => {setDeltransaction(transaction)}
                     }}
-                } dataSource={transactions} columns={column} />
+                } dataSource={transactionTable} columns={column} />
                 <div className="buttonTransaction">
                 <Button className="deleteTransaction" onClick={showDeleteTransaction}>Удалить</Button>
                 <Button className="addTransaction" onClick={showAddTransaction}>Добавить</Button>

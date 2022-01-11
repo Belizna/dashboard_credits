@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {Button, Table, Modal,Form, Input} from "antd"
 import './tablePayments.css'
+import moment from "moment"
 import FormPayment from "../FormPayment/FormPayment";
 import { useDispatch, useSelector } from "react-redux";
 import { loadPayment, makePayment, makeResetPayment,deletePaymentId  } from "../../redux/action/payment";
@@ -10,7 +11,18 @@ const TablePayments = ({record}) => {
     let dispatch = useDispatch()
 
     const {payments} = useSelector((state) => state.data_payments)
-  
+
+    const paymentsTable = []
+
+    paymentsTable.splice(0, paymentsTable.length)
+    payments.map(pay => paymentsTable.push({
+        _id: pay._id,
+        credit_name: pay.credit_name,
+        date: moment(pay.date).format('DD.MM.YYYY'),
+        summ: pay.summ,
+        status: pay.status
+    }))
+
     useEffect(()=> {
         dispatch(loadPayment(record))
         //eslint-disable-next-line react-hooks/exhaustive-deps
@@ -122,7 +134,7 @@ const TablePayments = ({record}) => {
             }}
                 rowClassName={(record, index) => record.status === false ? 'table-row-dark' :  'table-row-light'}
                 columns={columns} 
-                dataSource={payments}
+                dataSource={paymentsTable}
             />
             <div className="buttonPayments">
                 <Button className="deletePayments" onClick={setDelMakeRepayment}>Отменить платеж</Button>

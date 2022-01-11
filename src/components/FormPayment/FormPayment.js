@@ -1,5 +1,6 @@
 import React  from "react"
 import {Form, Input, Button} from "antd"
+import moment from "moment"
 import { useDispatch } from 'react-redux';
 import { editPayment } from '../../redux/action/payment';
 const FormPayment = ({update}) => {
@@ -8,10 +9,10 @@ const FormPayment = ({update}) => {
 
     const onFinish = (values) => {
         const value = {
-            'credit_name': update.credit_name,
-            'date': values['date'],
-            'summ': values['summ'],
-            'status': update.status
+            credit_name : update.credit_name,
+            date : moment(values['date'], 'DD.MM.YYYY').format('YYYY-MM-DD'),
+            summ: values['summ'],
+            status: update.status
         }
         dispatch(editPayment(update, value))
     }
@@ -21,8 +22,8 @@ const FormPayment = ({update}) => {
                         wrapperCol={{ span: 7 }}
                         onFinish={onFinish}
                     >
-                    <Form.Item name={['date']}label="Дата платежа">
-                    <Input value={update.date}/>
+                    <Form.Item name={['date']} label="Дата платежа">
+                    <Input/>
                     </Form.Item>
 
                     <Form.Item name={['summ']} label="Сумма платежа">
