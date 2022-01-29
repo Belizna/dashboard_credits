@@ -16,16 +16,17 @@ const calculator_of_payments = (values) => {
     const summ = Math.round(k_annuit * values.summ, 2)
     const status = false
     const credit_name = values.name_credit
-    
     var mouth = values.date.substr(5,2)
     var day = values.date.substr(8,2)
     var year = values.date.substr(0,4)
-    
+    var osn_ostatok = values.summ
+    var proc = 0
+    var platej = 0
     mouth++
 
     
     for(var i = 0; i < values.term; i++)
-    {
+    { 
         if(mouth < 10)
         {
           var date = (`${year}-0${mouth}-${day}`)
@@ -39,6 +40,10 @@ const calculator_of_payments = (values) => {
         else{
              date = (`${year}-${mouth}-${day}`)
         }
+        proc = Math.round((osn_ostatok * stavka), 2)
+        platej = summ - proc
+        osn_ostatok-=platej
+        console.log('proc = ' + proc + ' platej = ' + platej + ' osn_ostatok = ' + osn_ostatok)
         var oplata = {credit_name, date, summ, status}
         axios.post('https://backend-dashboard-credits.herokuapp.com/repayments/add',oplata)
         mouth++

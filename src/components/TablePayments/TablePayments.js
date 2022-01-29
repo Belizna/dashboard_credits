@@ -22,7 +22,7 @@ const TablePayments = ({record}) => {
         credit_name: pay.credit_name,
         date: moment(pay.date).format('LL'),
         summ: pay.summ,
-        status: pay.status
+        status: pay.status,
     }))
 
     useEffect(()=> {

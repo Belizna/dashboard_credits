@@ -5,7 +5,6 @@ const initialState = {
     loading: true
 }
 
-
 const transactionReducers = (state = initialState, action) => {
     switch(action.type) {
         case types.GET_TRANSACTION:
@@ -19,6 +18,11 @@ const transactionReducers = (state = initialState, action) => {
                 ...state,
                 loading: false
             }
+            case types.ADD_TRANSACTION:
+                return {
+                    ...state,
+                    loading: false
+                }
         default: 
             return state
     }

@@ -23,6 +23,7 @@ const paymentMakeResert = () => ({
 })
 
 
+
 export const loadPayment = (record) => {
     return function(dispatch) {
         axios.get(`https://backend-dashboard-credits.herokuapp.com/repayments/search/${record}`)

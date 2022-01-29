@@ -9,7 +9,9 @@ import "./transactionPages.css"
 const {TabPane} = Tabs
 
 const TransactionPages = () => {
+
     const {handle} = useParams()
+    
     return(
         <>
         <div className="transactionPages">

@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState} from "react";
 import { Table, Button, Modal} from 'antd';
 import "./tableTransaction.css"
 import moment from "moment"
 import FormTransaction from "../FormTransaction/FormTransaction";
 import { useDispatch , useSelector} from "react-redux";
 import {loadTransaction, transactionDelete} from "../../redux/action/transaction"
+
 
 const TableTransaction = ({record}) => {
 
@@ -18,7 +19,8 @@ const TableTransaction = ({record}) => {
     transactions.map(tran => transactionTable.push({
         _id: tran._id,
         date: moment(tran.date).format('LL'),
-        summ: tran.summ
+        summ: tran.summ,
+        credit_name: tran.credit_name
     }))
 
     useEffect(()=> {
