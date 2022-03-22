@@ -118,13 +118,14 @@ const CreditStatic = ({record}) => {
                 ["осталось", dataTable[0].ostatok]]}
                 title="График отношения выплаты к остатку"
             />
-            <AnyChart
+            <AnyChart 
                 width={800}
                 height={400}
                 type="pie"
                 data={[["экономия",dataTable[0].economia], 
                 ["переплата", duty - summ - dataTable[0].economia]]}
                 title="График отношения экономии к переплате"
+                
             />
             <Divider/>
             {data_credit_static && <AnyChart

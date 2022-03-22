@@ -13,11 +13,19 @@
     justify-content: center;
 }
 .addTransaction {
+    border-radius: 5px;
     margin-left: 15%;
     width: 130px;
+    color: #fff;
+    background-color: #60467e;
+    background-image: -webkit-linear-gradient(left bottom,rgba(159,88,150,0) 0,rgba(159,88,150,0.6) 100%);
 }
 .deleteTransaction {
     width: 130px;
+    border-radius: 5px;
+    color: #fff;
+    background-color: #60467e;
+    background-image: -webkit-linear-gradient(left bottom,rgba(159,88,150,0) 0,rgba(159,88,150,0.6) 100%);
 }
 
 .transparent {
